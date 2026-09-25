@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>CCAiM — Cloud Classification AI Model</title>
+    <meta name="description" content="CCAiM — a cloud classification model trained on ground-level photographs (WMO International Cloud Atlas, 10 classes). Trained on a home server with a Quadro P2200 — no cloud, no rented GPU.">
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#e8e8e6" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
+</head>
+<body>
+
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">
+        <span class="tt-sun">☀</span><span class="tt-moon">☾</span>
+    </button>
+
+    <div class="terminal-window">
+
+        <div class="boot-line">
+            <span class="boot-time">[ok]</span>
+            <span class="boot-msg">ccaim_card :: cloud classification ai model :: v0.0.6</span>
+            <span class="cursor-boot blink-boot"></span>
+        </div>
+
+        <!-- intro: model source -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">cat ccaim.py</span>
+        </div>
+
+        <div class="code-window">
+            <div class="code-window-bar">
+                <div class="code-window-dots"><span></span><span></span><span></span></div>
+                <span class="code-window-name">ccaim.py</span>
+            </div>
+<div class="code-window-body">
+<div class="code-line"><span class="tok-doc">"""CCAiM — cloud classification (WMO International Cloud Atlas, 10 classes)"""</span></div>
+<div class="code-line"><span class="tok-kw">import</span> <span class="tok-mod">torch</span><span class="tok-punct">.</span><span class="tok-mod">nn</span> <span class="tok-kw">as</span> <span class="tok-mod">nn</span></div>
+<div class="code-line">&#8203;</div>
+<div class="code-line"><span class="tok-kw">class</span> <span class="tok-func">CCAiMModel</span><span class="tok-punct">(</span><span class="tok-mod">nn</span><span class="tok-punct">.</span><span class="tok-type">Module</span><span class="tok-punct">):</span></div>
+<div class="code-line">    <span class="tok-doc">"""compact CNN trained from scratch — the project baseline line"""</span></div>
+<div class="code-line">&#8203;</div>
+<div class="code-line">    <span class="tok-kw">def</span> <span class="tok-func">__init__</span><span class="tok-punct">(</span><span class="tok-self">self</span><span class="tok-punct">,</span> <span class="tok-param">num_classes</span><span class="tok-punct">:</span> <span class="tok-type">int</span> <span class="tok-op">=</span> <span class="tok-num">10</span><span class="tok-punct">,</span> <span class="tok-param">width_mult</span><span class="tok-punct">:</span> <span class="tok-type">int</span> <span class="tok-op">=</span> <span class="tok-num">1</span><span class="tok-punct">):</span></div>
+<div class="code-line">        <span class="tok-func">super</span><span class="tok-punct">().</span><span class="tok-func">__init__</span><span class="tok-punct">()</span></div>
+<div class="code-line">        <span class="tok-var">base_channels</span> <span class="tok-op">=</span> <span class="tok-punct">[</span><span class="tok-num">64</span><span class="tok-punct">,</span> <span class="tok-num">128</span><span class="tok-punct">,</span> <span class="tok-num">256</span><span class="tok-punct">,</span> <span class="tok-num">512</span><span class="tok-punct">,</span> <span class="tok-num">512</span><span class="tok-punct">]</span>   <span class="tok-com"># 9,907,530 params</span></div>
+<div class="code-line">        <span class="tok-self">self</span><span class="tok-punct">.</span><span class="tok-prop">stem</span> <span class="tok-op">=</span> <span class="tok-func">ConvBlock</span><span class="tok-punct">(</span><span class="tok-num">3</span><span class="tok-punct">,</span> <span class="tok-var">base_channels</span><span class="tok-punct">[</span><span class="tok-num">0</span><span class="tok-punct">])</span></div>
+<div class="code-line">        <span class="tok-self">self</span><span class="tok-punct">.</span><span class="tok-prop">classifier</span> <span class="tok-op">=</span> <span class="tok-mod">nn</span><span class="tok-punct">.</span><span class="tok-func">Linear</span><span class="tok-punct">(</span><span class="tok-num">1024</span><span class="tok-punct">,</span> <span class="tok-param">num_classes</span><span class="tok-punct">)</span></div>
+<div class="code-line">        <span class="tok-self">self</span><span class="tok-punct">.</span><span class="tok-func">_init_weights</span><span class="tok-punct">()</span>   <span class="tok-com"># kaiming_normal_ (fan_out)</span></div>
+</div>
+        </div>
+
+        <!-- training run -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">python3 train.py</span>
+        </div>
+
+        <div class="code-window">
+            <div class="code-window-bar">
+                <div class="code-window-dots"><span></span><span></span><span></span></div>
+                <span class="code-window-name">train.log</span>
+            </div>
+<div class="code-window-body">
+<div class="code-line"><span class="tok-com">[INFO] using device: cuda</span></div>
+<div class="code-line"><span class="tok-com">[INFO] gpu   : NVIDIA Quadro P2200 — 5 GB GDDR5X, Pascal (sm_61)</span></div>
+<div class="code-line"><span class="tok-com">[INFO] env   : python 3.14, torch 2.14 (cu126), cuda 12.6</span></div>
+<div class="code-line"><span class="tok-com">[INFO] data  : serbekun/CCAiM-CloudsDataset — 10 classes</span></div>
+<div class="code-line"><span class="tok-com">[INFO] cfg   : 224x224, batch 16, epochs 100, lr 1e-5, seed 42</span></div>
+<div class="code-line"><span class="tok-com">[INFO] lines : scratch (CCAiMModel) + resnet18 (ImageNet head start)</span></div>
+</div>
+        </div>
+
+        <div class="program-output">val accuracy 50.34% | macro-F1 0.390 — best model so far (resnet18, V0.0.6)</div>
+
+        <!-- results -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">cat results.txt</span>
+        </div>
+
+        <div class="output">
+
+            <div class="section-label">
+                <span class="label-bracket">[</span>
+                <span class="label-text">MODEL RESULTS</span>
+                <span class="label-bracket">]</span>
+                <span class="label-count">4 entries</span>
+            </div>
+
+            <div class="stat-list">
+
+                <div class="stat-row">
+                    <div class="stat-head">
+                        <span class="stat-name">resnet18 · V0.0.6</span>
+                        <span class="stat-val">50.34%</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:50.34%"></div></div>
+                    <div class="stat-note">macro-F1 0.390 // transfer learning — practical line</div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head">
+                        <span class="stat-name">resnet18 · V0.0.5</span>
+                        <span class="stat-val">42.95%</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:42.95%"></div></div>
+                    <div class="stat-note">macro-F1 0.314</div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head">
+                        <span class="stat-name">scratch · V0.0.6</span>
+                        <span class="stat-val">35.57%</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:35.57%"></div></div>
+                    <div class="stat-note">macro-F1 0.237 // from scratch — the honest baseline</div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head">
+                        <span class="stat-name">scratch · V0.0.5</span>
+                        <span class="stat-val">27.52%</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:27.52%"></div></div>
+                    <div class="stat-note">macro-F1 0.123</div>
+                </div>
+
+            </div>
+
+            <div class="note-line">
+                validation accuracy on a fixed seed-42 split // 10 cloud classes, ground-level photos
+            </div>
+
+            <div class="note-line">
+                resnet18 starts from ImageNet weights — a one-time head start, not progress.
+                the scratch line is what measures the dataset growing.
+            </div>
+
+        </div>
+
+        <!-- dataset -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">cat dataset.txt</span>
+        </div>
+
+        <div class="output">
+
+            <div class="section-label">
+                <span class="label-bracket">[</span>
+                <span class="label-text">DATASET</span>
+                <span class="label-bracket">]</span>
+                <span class="label-count">916 images // 10 classes</span>
+            </div>
+
+            <div class="stat-list">
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Cumulus (Cu)</span><span class="stat-val">398 · 43.45%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:100%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Cirrus (Ci)</span><span class="stat-val">102 · 11.14%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:26%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Altocumulus (Ac)</span><span class="stat-val">96 · 10.48%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:24%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Stratocumulus (Sc)</span><span class="stat-val">94 · 10.26%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:24%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Altostratus (As)</span><span class="stat-val">63 · 6.88%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:16%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Cirrostratus (Cs)</span><span class="stat-val">42 · 4.59%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:11%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Stratus (St)</span><span class="stat-val">38 · 4.15%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:10%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Cirrocumulus (Cc)</span><span class="stat-val">33 · 3.60%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:8.3%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Cumulonimbus (Cb)</span><span class="stat-val">33 · 3.60%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:8.3%"></div></div>
+                </div>
+
+                <div class="stat-row">
+                    <div class="stat-head"><span class="stat-name">Nimbostratus (Ns)</span><span class="stat-val">17 · 1.86%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:4.3%"></div></div>
+                </div>
+
+            </div>
+
+            <div class="note-line">
+                916 ground-level cloud photographs, MIT, all photos licensed CC0 1.0.
+                classes are heavily unbalanced — that is why the loss is
+                class-weighted and macro-F1 is reported next to accuracy.
+            </div>
+
+        </div>
+
+        <!-- hardware -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">cat hardware.txt</span>
+        </div>
+
+        <div class="output">
+
+            <div class="section-label">
+                <span class="label-bracket">[</span>
+                <span class="label-text">TRAINING HARDWARE</span>
+                <span class="label-bracket">]</span>
+                <span class="label-count">node3 // local</span>
+            </div>
+
+            <div class="spec-list">
+
+                <div class="spec-row">
+                    <span class="spec-key">host</span>
+                    <span class="spec-val">home server, Arch Linux — <b>not</b> a rented box</span>
+                </div>
+
+                <div class="spec-row">
+                    <span class="spec-key">gpu</span>
+                    <span class="spec-val"><b>NVIDIA Quadro P2200</b> — 5120 MiB GDDR5X, Pascal (sm_61), 1280 CUDA cores, ~3.8 TFLOPS FP32, 75 W cap, driver 580.178.04, <b>no tensor cores</b></span>
+                </div>
+
+                <div class="spec-row">
+                    <span class="spec-key">cpu</span>
+                    <span class="spec-val"><b>Intel Core i7-7700K</b> — 4 cores / 8 threads @ 4.2 (4.5) GHz, 8 MB cache, 91 W</span>
+                </div>
+
+                <div class="spec-row">
+                    <span class="spec-key">ram</span>
+                    <span class="spec-val">16 GiB</span>
+                </div>
+
+                <div class="spec-row">
+                    <span class="spec-key">storage</span>
+                    <span class="spec-val">256 GB NVMe (Samsung) + 2 x 1 TB HDD (Toshiba)</span>
+                </div>
+
+                <div class="spec-row">
+                    <span class="spec-key">runtime</span>
+                    <span class="spec-val">Python 3.14 // PyTorch 2.14 (cu126) // CUDA 12.6 — <b>torch.cuda.is_available() = True</b></span>
+                </div>
+
+            </div>
+
+            <div class="note-line">
+                one machine, one consumer GPU from 2019, all of it at home:
+                dataset download, training, validation metrics, inference.
+                no Colab, no rented A100, no cloud bill.
+            </div>
+
+            <div class="note-line">
+                on Pascal sm_61 the speed is honest, just slow — so the model stays
+                small and the epochs few enough to finish overnight.
+            </div>
+
+            <div class="note-line">
+                training has moved off the desktop onto node3, the box that owns the GPU.
+                the V0.0.5 / V0.0.6 metrics above were set before that move.
+            </div>
+
+        </div>
+
+        <!-- links -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">cat links.txt</span>
+        </div>
+
+        <div class="output">
+
+            <div class="section-label">
+                <span class="label-bracket">[</span>
+                <span class="label-text">LINKS</span>
+                <span class="label-bracket">]</span>
+                <span class="label-count">4 entries</span>
+            </div>
+
+            <a href="https://github.com/serbekun/CCAiM" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-num">00</span>
+                <span class="link-icon gh"></span>
+                <span class="link-name">GitHub</span>
+                <span class="link-desc">code: train, evaluate, predict</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://huggingface.co/serbekun/CCAiM" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-num">01</span>
+                <span class="link-icon hf"></span>
+                <span class="link-name">Hugging Face</span>
+                <span class="link-desc">model card, weights, metrics</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://huggingface.co/datasets/serbekun/CCAiM-CloudsDataset" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-num">02</span>
+                <span class="link-icon ds"></span>
+                <span class="link-name">CloudsDataset</span>
+                <span class="link-desc">916 photos, 10 classes, MIT</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://huggingface.co/collections/serbekun/ccaim" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-num">03</span>
+                <span class="link-icon hf"></span>
+                <span class="link-name">HF Collection</span>
+                <span class="link-desc">model + datasets in one place</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <span class="footer-text">ccaim_card // v0.0.6 // 2025-2026</span>
+    </div>
+
+</body>
+</html>

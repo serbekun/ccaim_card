@@ -1,0 +1,863 @@
+/* ═══════════════════════════════════════════════
+   ccaim_card — project card :: terminal style
+   (theme, layout and link items are the serbekun_card
+   stylesheet; the blocks at the bottom are the ccaim
+   additions: stat bars, spec rows, notes)
+   ═══════════════════════════════════════════════ */
+
+/* ── Reset ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Root ── */
+:root {
+    --bg:     #0a0a0a;
+    --bg2:    #0e0e0e;
+    --bg3:    #111;
+    --border: #1a1a1a;
+    --border-hover: #333;
+    --text:   #c8c8c8;
+    --text-dim:  #555;
+    --text-dimmer: #333;
+    --text-bright: #fff;
+    --accent: #888;
+    --font: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono',
+            'Codelia', 'Iosevka', Consolas, 'Liberation Mono', monospace;
+    --radius: 8px;
+
+    --code-fg:       #d4d4d4;
+    --code-kw:       #569cd6;
+    --code-ctrl:     #c586c0;
+    --code-type:     #4ec9b0;
+    --code-enum:     #4ec9b0;
+    --code-func:     #dcdcaa;
+    --code-macro:    #dcdcaa;
+    --code-var:      #9cdcfe;
+    --code-param:    #9cdcfe;
+    --code-prop:     #9cdcfe;
+    --code-const:    #4fc1ff;
+    --code-str:      #ce9178;
+    --code-char:     #ce9178;
+    --code-esc:      #d7ba7d;
+    --code-num:      #b5cea8;
+    --code-com:      #6a9955;
+    --code-doc:      #608b4e;
+    --code-pp:       #c586c0;
+    --code-attr:     #9cdcfe;
+    --code-lifetime: #569cd6;
+    --code-op:       #d4d4d4;
+    --code-punct:    #808080;
+    --code-self:     #569cd6;
+    --code-mod:      #4ec9b0;
+    --code-label:    #c8c8c8;
+    --code-unsafe:   #f44747;
+    --code-err:      #f44747;
+    --code-warn:     #cca700;
+
+    color-scheme: dark;
+}
+
+/* ── Light theme ──
+   Palette is applied in two ways:
+   1. automatically, when the system prefers light and the user
+      has not picked a theme on the site (no data-theme attribute);
+   2. explicitly, via data-theme="light" set by theme.js.
+   The variable block is intentionally duplicated — CSS has no way
+   to share a ruleset between a media query and a selector. */
+:root[data-theme="light"] {
+    --bg:     #e8e8e6;
+    --bg2:    #f6f6f4;
+    --bg3:    #ffffff;
+    --border: #d4d4d0;
+    --border-hover: #a8a8a4;
+    --text:   #333;
+    --text-dim:  #888;
+    --text-dimmer: #b8b8b4;
+    --text-bright: #000;
+    --accent: #666;
+
+    --code-fg:       #383838;
+    --code-kw:       #0000ff;
+    --code-ctrl:     #af00db;
+    --code-type:     #267f99;
+    --code-enum:     #267f99;
+    --code-func:     #795e26;
+    --code-macro:    #795e26;
+    --code-var:      #001080;
+    --code-param:    #001080;
+    --code-prop:     #001080;
+    --code-const:    #0070c1;
+    --code-str:      #a31515;
+    --code-char:     #a31515;
+    --code-esc:      #ee0000;
+    --code-num:      #098658;
+    --code-com:      #008000;
+    --code-doc:      #237893;
+    --code-pp:       #af00db;
+    --code-attr:     #001080;
+    --code-lifetime: #0000ff;
+    --code-op:       #383838;
+    --code-punct:    #666;
+    --code-self:     #0000ff;
+    --code-mod:      #267f99;
+    --code-label:    #333;
+    --code-unsafe:   #cd3131;
+    --code-err:      #cd3131;
+    --code-warn:     #bf8803;
+
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+        --bg:     #e8e8e6;
+        --bg2:    #f6f6f4;
+        --bg3:    #ffffff;
+        --border: #d4d4d0;
+        --border-hover: #a8a8a4;
+        --text:   #333;
+        --text-dim:  #888;
+        --text-dimmer: #b8b8b4;
+        --text-bright: #000;
+        --accent: #666;
+
+        --code-fg:       #383838;
+        --code-kw:       #0000ff;
+        --code-ctrl:     #af00db;
+        --code-type:     #267f99;
+        --code-enum:     #267f99;
+        --code-func:     #795e26;
+        --code-macro:    #795e26;
+        --code-var:      #001080;
+        --code-param:    #001080;
+        --code-prop:     #001080;
+        --code-const:    #0070c1;
+        --code-str:      #a31515;
+        --code-char:     #a31515;
+        --code-esc:      #ee0000;
+        --code-num:      #098658;
+        --code-com:      #008000;
+        --code-doc:      #237893;
+        --code-pp:       #af00db;
+        --code-attr:     #001080;
+        --code-lifetime: #0000ff;
+        --code-op:       #383838;
+        --code-punct:    #666;
+        --code-self:     #0000ff;
+        --code-mod:      #267f99;
+        --code-label:    #333;
+        --code-unsafe:   #cd3131;
+        --code-err:      #cd3131;
+        --code-warn:     #bf8803;
+
+        color-scheme: light;
+    }
+}
+
+html {
+    background: var(--bg);
+    min-height: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font);
+    -webkit-tap-highlight-color: transparent;
+    background: transparent;
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 2rem 1rem 3rem;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ── Boot line ── */
+.boot-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 720px;
+    width: 100%;
+    padding: 6px 14px;
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg2);
+}
+.boot-time {
+    color: var(--text-bright);
+    font-weight: 500;
+}
+.boot-msg {
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+}
+.cursor-boot {
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    background: var(--text-bright);
+    vertical-align: -2px;
+}
+.blink-boot { animation: blink 1.1s step-end infinite; }
+
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes typePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ── Theme toggle ── */
+.theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 10;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-dim);
+    font-family: var(--font);
+    font-size: 0.9rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.theme-toggle:hover {
+    background: var(--bg3);
+    border-color: var(--border-hover);
+    color: var(--text-bright);
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* icon: sun in dark theme (click -> light), moon in light theme */
+.theme-toggle .tt-moon { display: none; }
+
+:root[data-theme="light"] .theme-toggle .tt-sun  { display: none; }
+:root[data-theme="light"] .theme-toggle .tt-moon { display: inline; }
+
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .theme-toggle .tt-sun  { display: none; }
+    :root:not([data-theme="dark"]) .theme-toggle .tt-moon { display: inline; }
+}
+
+/* ── Terminal window ── */
+.terminal-window {
+    max-width: 720px;
+    width: 100%;
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ── Code window (syntax-highlighted snippet) ── */
+.code-window {
+    margin-bottom: 1.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    animation: fadeIn 0.7s ease-out;
+}
+
+.code-window-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 12px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+}
+
+.code-window-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.code-window-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-hover);
+}
+
+.code-window-name {
+    font-size: 0.66rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+}
+
+.code-window-body {
+    padding: 14px 18px;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    overflow-x: auto;
+    color: var(--code-fg);
+}
+
+.code-line { white-space: pre; }
+
+/* ── Syntax token classes ── */
+.tok-kw       { color: var(--code-kw); }
+.tok-ctrl     { color: var(--code-ctrl); }
+.tok-type     { color: var(--code-type); }
+.tok-enum     { color: var(--code-enum); }
+.tok-func     { color: var(--code-func); }
+.tok-macro    { color: var(--code-macro); }
+.tok-var      { color: var(--code-var); }
+.tok-param    { color: var(--code-param); font-style: italic; }
+.tok-prop     { color: var(--code-prop); }
+.tok-const    { color: var(--code-const); }
+.tok-str      { color: var(--code-str); }
+.tok-char     { color: var(--code-char); }
+.tok-esc      { color: var(--code-esc); }
+.tok-num      { color: var(--code-num); }
+.tok-com      { color: var(--code-com); font-style: italic; }
+.tok-doc      { color: var(--code-doc); font-style: italic; }
+.tok-pp       { color: var(--code-pp); }
+.tok-attr     { color: var(--code-attr); }
+.tok-lifetime { color: var(--code-lifetime); font-style: italic; }
+.tok-op       { color: var(--code-op); }
+.tok-punct    { color: var(--code-punct); }
+.tok-self     { color: var(--code-self); font-style: italic; }
+.tok-mod      { color: var(--code-mod); }
+.tok-label    { color: var(--code-label); }
+.tok-unsafe   { color: var(--code-unsafe); font-weight: 600; }
+.tok-err      { color: var(--code-err); }
+.tok-warn     { color: var(--code-warn); }
+
+/* ── Program output ── */
+.program-output {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg2);
+    font-size: 0.8rem;
+    color: var(--text-bright);
+}
+
+/* ── Prompt line ── */
+.prompt-line {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+    flex-wrap: wrap;
+}
+
+.prompt-user { color: var(--text-bright); font-weight: 500; }
+.prompt-at   { color: var(--text-dim); }
+.prompt-host { color: var(--accent); font-weight: 500; }
+.prompt-path { color: var(--text-dim); }
+.prompt-dol  { color: var(--text-dim); margin: 0 2px 0 4px; }
+.prompt-cmd  { color: var(--text-bright); letter-spacing: 0.04em; }
+
+.cursor {
+    display: inline-block;
+    width: 7px;
+    height: 14px;
+    background: var(--text);
+    vertical-align: -2px;
+    margin-left: 2px;
+}
+
+.blink { animation: blink 1.1s step-end infinite; }
+
+/* ── Section labels ── */
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-left: 4px;
+}
+
+.label-bracket {
+    color: var(--text-dimmer);
+}
+
+.label-text {
+    color: var(--text-bright);
+    font-weight: 500;
+}
+
+.label-count {
+    color: var(--text-dimmer);
+    font-size: 0.62rem;
+    margin-left: auto;
+    text-transform: none;
+    letter-spacing: 0.06em;
+}
+
+/* ── Output area ── */
+.output {
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.7s ease-out;
+}
+
+/* ── Link items ── */
+.link-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    text-decoration: none;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    position: relative;
+    overflow: hidden;
+}
+
+.link-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.2s;
+}
+
+.link-item:hover {
+    background: var(--bg3);
+    border-color: var(--border-hover);
+    color: var(--text-bright);
+}
+
+.link-item:hover::before {
+    background: var(--accent);
+}
+
+/* ── Link number ── */
+.link-num {
+    font-size: 0.68rem;
+    color: var(--text-dimmer);
+    min-width: 20px;
+    font-weight: 400;
+    transition: color 0.2s;
+}
+
+.link-item:hover .link-num {
+    color: var(--text-dim);
+}
+
+/* ── Link icon ── */
+.link-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--text-dimmer);
+    border-radius: 4px;
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+/* GitHub */
+.link-icon.gh::after { content: 'GH'; }
+.link-item:hover .link-icon.gh {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+
+/* Hugging Face */
+.link-icon.hf::after { content: 'HF'; }
+.link-item:hover .link-icon.hf {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+/* Instagram */
+.link-icon.ig::after { content: 'IG'; }
+.link-item:hover .link-icon.ig {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+/* Telegram */
+.link-icon.tg::after { content: 'TG'; }
+.link-item:hover .link-icon.tg {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+/* Email */
+.link-icon.mail::after { content: '@'; font-size: 0.7rem; }
+.link-item:hover .link-icon.mail {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+/* Serbekun Service */
+.link-icon.ss::after { content: 'SS'; }
+.link-item:hover .link-icon.ss {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+/* Bunkasai Server */
+.link-icon.bunkasai::after { content: '茎'; }
+.link-item:hover .link-icon.bunkasai {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+
+.link-icon.se::after { content: 'SE'; }
+.link-item:hover .link-icon.se {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+
+/* ── Link name ── */
+.link-name {
+    flex: 1;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+}
+
+/* ── Link description ── */
+.link-desc {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    text-align: right;
+}
+
+.link-item:hover .link-desc {
+    color: var(--text);
+}
+
+/* ── Link arrow ── */
+.link-arrow {
+    color: var(--text-dimmer);
+    font-size: 0.85rem;
+    transition: color 0.2s, transform 0.2s;
+    margin-left: 4px;
+}
+
+.link-item:hover .link-arrow {
+    color: var(--text-dim);
+    transform: translateX(3px);
+}
+
+/* ── Footer ── */
+.footer {
+    max-width: 720px;
+    width: 100%;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    text-align: right;
+}
+
+.footer-text {
+    font-size: 0.68rem;
+    color: var(--text-dimmer);
+    letter-spacing: 0.08em;
+}
+
+/* ── Responsive ── */
+
+/* Tablet / small laptop */
+@media (max-width: 820px) {
+    body { padding: 1.5rem 1rem 2.5rem; }
+    .terminal-window, .footer, .boot-line { max-width: 100%; }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem 0.9rem 2rem;
+        padding-left: max(0.9rem, env(safe-area-inset-left));
+        padding-right: max(0.9rem, env(safe-area-inset-right));
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+        line-height: 1.6;
+    }
+
+    /* keep content clear of the fixed theme toggle */
+    .terminal-window { padding-top: 2.4rem; }
+
+    .theme-toggle {
+        top: max(10px, env(safe-area-inset-top));
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .code-window { margin-bottom: 1.1rem; }
+
+    .code-window-body {
+        font-size: 0.68rem;
+        padding: 12px 14px;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+    }
+
+    .program-output {
+        margin-bottom: 1.1rem;
+        font-size: 0.75rem;
+        padding: 8px 12px;
+    }
+
+    .prompt-line {
+        font-size: 0.72rem;
+        margin-bottom: 1.1rem;
+        gap: 4px;
+        row-gap: 2px;
+        word-break: break-word;
+    }
+
+    /* the shell command can be long — let it wrap onto its own line */
+    .prompt-cmd {
+        flex-basis: 100%;
+        letter-spacing: 0.02em;
+    }
+
+    .link-item {
+        padding: 12px;
+        font-size: 0.82rem;
+        flex-wrap: wrap;
+        gap: 10px;
+        min-height: 48px;          /* comfortable tap target */
+        margin-bottom: 8px;
+    }
+
+    .link-name { flex: 1 1 auto; min-width: 0; }
+
+    .link-desc {
+        flex-basis: 100%;
+        text-align: left;
+        padding-left: 42px;
+        font-size: 0.66rem;
+        margin-top: -6px;
+    }
+
+    .link-arrow { margin-left: auto; }
+
+    .section-label { font-size: 0.64rem; }
+    .label-count   { font-size: 0.58rem; }
+
+    .boot-line {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+
+    .footer { text-align: left; }
+}
+
+/* Narrow phones */
+@media (max-width: 380px) {
+    body { padding-left: 0.7rem; padding-right: 0.7rem; }
+    .code-window-body { font-size: 0.62rem; padding: 10px 12px; }
+    .prompt-line { font-size: 0.67rem; }
+    .link-item { font-size: 0.78rem; gap: 8px; }
+    .link-desc { padding-left: 0; }
+    .link-num { min-width: 16px; }
+}
+
+/* Touch devices: hover styles stick after a tap, so apply them on press */
+@media (hover: none) {
+    .link-item:hover {
+        background: var(--bg2);
+        border-color: var(--border);
+        color: var(--text);
+    }
+    .link-item:hover::before { background: transparent; }
+    .link-item:hover .link-arrow { transform: none; }
+
+    .link-item:active {
+        background: var(--bg3);
+        border-color: var(--border-hover);
+        color: var(--text-bright);
+    }
+    .link-item:active::before { background: var(--accent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ── Smooth scroll ── */
+html { scroll-behavior: smooth; }
+
+/* ── Selection ── */
+::selection {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+/* ── Focus ── */
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════
+   ccaim_card additions
+   ═══════════════════════════════════════════════ */
+
+/* Dataset icon */
+.link-icon.ds::after { content: 'DS'; }
+.link-item:hover .link-icon.ds {
+    border-color: var(--text);
+    color: var(--text-bright);
+}
+
+/* ── Stat list (model results, dataset classes) ── */
+.stat-list { margin-bottom: 1rem; }
+
+.stat-row {
+    padding: 9px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+}
+
+.stat-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+.stat-name {
+    flex: 1;
+    color: var(--text);
+    letter-spacing: 0.02em;
+}
+
+.stat-val {
+    color: var(--text-bright);
+    font-size: 0.76rem;
+    white-space: nowrap;
+}
+
+.stat-bar {
+    margin-top: 7px;
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    background: var(--accent);
+}
+
+.stat-note {
+    margin-top: 5px;
+    font-size: 0.66rem;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+}
+
+/* ── Spec rows (hardware) ── */
+.spec-list { margin-bottom: 1rem; }
+
+.spec-row {
+    display: flex;
+    gap: 14px;
+    padding: 10px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+}
+
+.spec-key {
+    flex-shrink: 0;
+    min-width: 66px;
+    color: var(--text-dim);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-top: 3px;
+}
+
+.spec-val {
+    flex: 1;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.spec-val b {
+    color: var(--text-bright);
+    font-weight: 500;
+}
+
+/* ── Notes under a section ── */
+.note-line {
+    padding-left: 4px;
+    margin-bottom: 8px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+}
+
+/* ── ccaim additions: phones ── */
+@media (max-width: 600px) {
+    .spec-row { flex-direction: column; gap: 2px; }
+    .spec-key { padding-top: 0; }
+    .stat-row { padding: 9px 12px; }
+    .stat-head { font-size: 0.76rem; }
+    .note-line { font-size: 0.66rem; }
+}
+
+@media (max-width: 380px) {
+    .stat-val { font-size: 0.7rem; }
+    .spec-val { font-size: 0.76rem; }
+}

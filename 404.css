@@ -1,0 +1,64 @@
+/* ═══════════════════════════════════════════════
+   ccaim_card — 404 page extras
+   (builds on style.css: error output + big status)
+   ═══════════════════════════════════════════════ */
+
+/* ── Error output line ── */
+.program-output.err {
+    color: var(--code-err);
+    border-color: var(--code-err);
+    align-items: flex-start;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.err-glyph {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    border: 1px solid var(--code-err);
+    border-radius: 3px;
+    font-size: 0.6rem;
+    font-weight: 600;
+}
+
+/* ── Big status code ── */
+.status-block {
+    margin-bottom: 1.5rem;
+    padding: 18px 14px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    animation: fadeIn 0.7s ease-out;
+}
+
+.status-ascii {
+    font-family: var(--font);
+    font-size: 3.4rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    color: var(--text-bright);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.status-sub {
+    margin-top: 10px;
+    font-size: 0.66rem;
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+    .status-ascii { font-size: 2.6rem; }
+    .status-sub   { font-size: 0.6rem; letter-spacing: 0.3em; text-indent: 0.3em; }
+    .program-output.err { font-size: 0.7rem; }
+}

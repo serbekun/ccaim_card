@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ccaim-card",
+  "compatibility_date": "2026-06-20",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "ccaim.serbekun.com/*", "zone_name": "serbekun.com" }
+  ],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}

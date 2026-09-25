@@ -1,0 +1,5 @@
+# files that must never end up in the deployed assets
+.git
+.wrangler
+node_modules
+.assetsignore

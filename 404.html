@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>CCAiM — 404</title>
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#e8e8e6" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="404.css">
+    <script src="theme.js"></script>
+</head>
+<body>
+
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">
+        <span class="tt-sun">☀</span><span class="tt-moon">☾</span>
+    </button>
+
+    <div class="terminal-window">
+
+        <!-- lookup attempt: python source -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">cat lookup.py</span>
+        </div>
+
+        <div class="code-window">
+            <div class="code-window-bar">
+                <div class="code-window-dots"><span></span><span></span><span></span></div>
+                <span class="code-window-name">lookup.py</span>
+            </div>
+<div class="code-window-body">
+<div class="code-line"><span class="tok-kw">def</span> <span class="tok-func">main</span><span class="tok-punct">():</span></div>
+<div class="code-line">    <span class="tok-var">model</span> <span class="tok-op">=</span> <span class="tok-func">load_model</span><span class="tok-punct">(</span><span class="tok-str">"models/CCAiM_V0_0_6.pth"</span><span class="tok-punct">)</span></div>
+<div class="code-line">    <span class="tok-var">model</span><span class="tok-punct">.</span><span class="tok-func">predict</span><span class="tok-punct">(</span><span class="tok-str">"/this/page"</span><span class="tok-punct">)</span>   <span class="tok-com"># no such file</span></div>
+</div>
+        </div>
+
+        <!-- run & crash -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">python3 lookup.py</span>
+        </div>
+
+        <div class="program-output err">
+            <span class="err-glyph">!</span>
+            FileNotFoundError: [Errno 2] No such file or directory: '/this/page': 404 — page not found
+        </div>
+
+        <!-- big status code -->
+        <div class="status-block">
+            <pre class="status-ascii">404</pre>
+            <div class="status-sub">NOT&nbsp;FOUND</div>
+        </div>
+
+        <!-- exit code -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">echo $?</span>
+        </div>
+
+        <div class="program-output">1</div>
+
+        <!-- suggestions -->
+        <div class="prompt-line">
+            <span class="prompt-user">serbekun</span>
+            <span class="prompt-at">@</span>
+            <span class="prompt-host">ccaim</span>
+            <span class="prompt-path">~/src</span>
+            <span class="prompt-dol">$</span>
+            <span class="prompt-cmd">ls ./routes --known-good</span>
+        </div>
+
+        <div class="output">
+
+            <div class="section-label">
+                <span class="label-bracket">[</span>
+                <span class="label-text">TRY ONE OF THESE</span>
+                <span class="label-bracket">]</span>
+                <span class="label-count">3 entries</span>
+            </div>
+
+            <a href="index.html" class="link-item">
+                <span class="link-num">01</span>
+                <span class="link-icon ds"></span>
+                <span class="link-name">Home</span>
+                <span class="link-desc">back to ccaim_card</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://github.com/serbekun/CCAiM" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-num">02</span>
+                <span class="link-icon gh"></span>
+                <span class="link-name">GitHub</span>
+                <span class="link-desc">code: train, evaluate, predict</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://huggingface.co/serbekun/CCAiM" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-num">03</span>
+                <span class="link-icon hf"></span>
+                <span class="link-name">Hugging Face</span>
+                <span class="link-desc">model card, weights, metrics</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <span class="footer-text">ccaim_card // v0.0.6 // 2025-2026</span>
+    </div>
+
+</body>
+</html>
